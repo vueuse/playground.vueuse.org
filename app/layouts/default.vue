@@ -66,8 +66,18 @@ const issueLink = computed(() => {
 const toast = useToast()
 const { copy } = useClipboard()
 
+function resetVueVersion() {
+  vueVersion.value = null
+}
+
+function resetVueUseVersion() {
+  vueUseVersion.value = 'latest'
+}
+
 async function copyLink(e: MouseEvent) {
   if (e.metaKey) {
+    resetVueVersion()
+    resetVueUseVersion()
     // hidden logic for going to local debug from playground.vueuse.org
     window.location.href = `http://localhost:3000/${window.location.hash}`
     return
