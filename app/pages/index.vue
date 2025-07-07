@@ -33,6 +33,7 @@ const vueUsePackages = [
   '@vueuse/metadata',
   '@vueuse/shared',
   '@vueuse/core',
+  '@vueuse/components',
   '@vueuse/integrations',
   '@vueuse/math',
   '@vueuse/rxjs',
