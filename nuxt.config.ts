@@ -1,14 +1,9 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   sourcemap: false,
-  modules: ['@nuxt/ui', '@nuxt/eslint', '@vueuse/nuxt'],
-  eslint: {
-    config: {
-      standalone: false,
-    },
-  },
+  modules: ['@nuxt/ui', '@vueuse/nuxt'],
   vite: {
     optimizeDeps: {
       exclude: ['@vue/repl'],

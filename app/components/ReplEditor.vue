@@ -10,7 +10,8 @@ const props = defineProps({
   },
   store: {
     type: Object as PropType<Store>,
-    required: true,
+    required: false,
+    default: () => {},
   },
 })
 
