@@ -12,7 +12,25 @@ const loadingVersions = computed(() => {
   return status.value === 'pending'
 })
 
-const vueVersion = shallowRef()
+const { vueVersion, vueuseVersion } = useReplStore()
+
+watch(() => versions.value, () => {
+  if (versions.value.length > 0 && !vueVersion.value) {
+    const vue = versions.value.find(p => p.name === 'vue')
+    vueVersion.value = vue?.distTags.latest
+  }
+  if (versions.value.length > 0 && !vueuseVersion.value) {
+    const vueuse = versions.value.find(p => p.name === '@vueuse/core')
+    vueuseVersion.value = vueuse?.distTags.latest
+  }
+}, { immediate: true })
+
+watch(() => versions.value, () => {
+  if (versions.value.length > 0 && !vueVersion.value) {
+    const vue = versions.value.find(p => p.name === 'vue')
+    vueVersion.value = vue?.distTags.latest
+  }
+}, { immediate: true })
 
 const vueVersions = computed(() => {
   const vue = versions.value.find(p => p.name === 'vue')
@@ -23,8 +41,6 @@ const vueVersions = computed(() => {
 
 const vueVersionsSorted = useSorted(vueVersions, (a, b) => semver.compare(b, a))
 
-const vueUseVersion = useRouteQuery('vueuse', 'latest')
-
 const vueUseVersions = computed(() => {
   const vueuse = versions.value.find(p => p.name === '@vueuse/core')
   if (vueuse?.error || error.value)
@@ -32,9 +48,7 @@ const vueUseVersions = computed(() => {
   return vueuse?.versions ?? []
 })
 
-const vueUseVersionsSorted = useSorted(vueUseVersions, (a, b) => semver.compare(b, a))
-
-provide('vueVersion', vueVersion)
+const vueuseVersionsSorted = useSorted(vueUseVersions, (a, b) => semver.compare(b, a))
 
 const colorMode = useColorMode()
 
@@ -61,7 +75,7 @@ const prod = useRouteQuery<string, boolean>('prod', 'false', {
       <div class="flex gap-2 items-center">
         <USwitch v-model="ssr" label="SSR" />
         <USwitch v-model="prod" label="Prod" />
-        <USelectMenu v-model="vueUseVersion" :items="vueUseVersionsSorted" class="w-32" icon="i-logos-vueuse" :loading="loadingVersions" />
+        <USelectMenu v-model="vueuseVersion" :items="vueuseVersionsSorted" class="w-32" icon="i-logos-vueuse" :loading="loadingVersions" />
         <USelectMenu v-model="vueVersion" :items="vueVersionsSorted" class="w-32" icon="i-logos-vue" :loading="loadingVersions" />
         <UButton icon="i-lucide-refresh-ccw" size="md" color="primary" variant="soft" @click="() => fetchVersions()" />
         <UButton
@@ -85,7 +99,7 @@ const prod = useRouteQuery<string, boolean>('prod', 'false', {
     </header>
 
     <main class="h-[calc(100vh-var(--header-height))]">
-      <NuxtPage />
+      <slot />
     </main>
   </UApp>
 </template>

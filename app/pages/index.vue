@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { OutputModes } from '@vue/repl'
-import type { ShallowRef } from 'vue'
 import { mergeImportMap, useStore, useVueImportMap } from '@vue/repl'
 
 const showOutput = useRouteQuery<string, boolean>('showOutput', 'false', {
@@ -25,9 +24,7 @@ const {
   productionMode,
 } = useVueImportMap()
 
-const injectedVueVersion = inject<ShallowRef<string>>('vueVersion', shallowRef<string>('latest'))
-
-const vueuseVersion = useRouteQuery('vueuse', 'latest')
+const { vueVersion: injectedVueVersion, vueuseVersion } = useReplStore()
 
 const vueUsePackages = [
   '@vueuse/metadata',
@@ -52,10 +49,8 @@ const importMap = computed(() => {
 
 const { template } = useTemplate()
 
-injectedVueVersion.value = vueVersion.value ?? 'latest'
-
 watch(() => injectedVueVersion.value, (newVersion) => {
-  vueVersion.value = newVersion
+  vueVersion.value = newVersion ?? null
 })
 
 watch(() => prod.value, (newProd) => {
@@ -83,12 +78,5 @@ watchEffect(() => hash.value = store.serialize())
 </script>
 
 <template>
-  <ClientOnly>
-    <ReplEditor :ssr="ssr" :store="store" />
-    <template #fallback>
-      <div class="flex w-full h-full justify-center items-center px-12">
-        <UProgress animation="swing" />
-      </div>
-    </template>
-  </ClientOnly>
+  <ReplEditor :ssr="ssr" :store="store" />
 </template>
