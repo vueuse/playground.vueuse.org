@@ -69,7 +69,7 @@ const issueLink = computed(() => {
 
 <template>
   <UApp>
-    <header class="flex items-center justify-around h-(--header-height)">
+    <header class="flex items-center justify-between px-6 h-(--header-height)">
       <div class="flex gap-2 items-center">
         <UIcon name="i-logos-vueuse" class="size-8" />VueUse Playground
       </div>
@@ -109,6 +109,22 @@ const issueLink = computed(() => {
         </UTooltip>
       </div>
       <div class="lg:hidden">
+        <UButton
+          color="neutral" variant="ghost"
+          :icon="colorMode.preference === 'dark' ? 'i-heroicons-moon' : 'i-heroicons-sun'"
+          aria-label="color mode"
+          @click="toggleColorMode"
+        />
+        <UTooltip text="Open on GitHub">
+          <UButton
+            color="neutral"
+            variant="ghost"
+            to="https://github.com/vueuse"
+            target="_blank"
+            icon="i-simple-icons-github"
+            aria-label="GitHub"
+          />
+        </UTooltip>
         <USlideover title="Settings">
           <UButton icon="i-lucide-menu" color="neutral" variant="outline" />
           <template #body>
@@ -135,22 +151,6 @@ const issueLink = computed(() => {
             </section>
           </template>
         </USlideover>
-        <UTooltip text="Open on GitHub">
-          <UButton
-            color="neutral" variant="ghost"
-            :icon="colorMode.preference === 'dark' ? 'i-heroicons-moon' : 'i-heroicons-sun'"
-            aria-label="color mode"
-            @click="toggleColorMode"
-          />
-          <UButton
-            color="neutral"
-            variant="ghost"
-            to="https://github.com/vueuse"
-            target="_blank"
-            icon="i-simple-icons-github"
-            aria-label="GitHub"
-          />
-        </UTooltip>
       </div>
     </header>
 
