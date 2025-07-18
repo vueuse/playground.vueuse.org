@@ -85,7 +85,7 @@ const prod = useRouteQuery<string, boolean>('prod', 'false', {
     </header>
 
     <main class="h-[calc(100vh-var(--header-height))]">
-      <NuxtPage />
+      <slot />
     </main>
   </UApp>
 </template>
