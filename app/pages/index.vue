@@ -2,6 +2,7 @@
 import type { OutputModes } from '@vue/repl'
 import type { ShallowRef } from 'vue'
 import { mergeImportMap, useStore, useVueImportMap } from '@vue/repl'
+import semver from 'semver'
 
 const showOutput = useRouteQuery<string, boolean>('showOutput', 'false', {
   transform: stringToBooleanTransformer,
@@ -40,8 +41,10 @@ const vueUsePackages = [
 ]
 
 function generateVueUseImportCDNs() {
+  const version = semver.coerce(vueuseVersion.value)
+  const file = vueuseVersion.value === 'latest' || (version && semver.gte(version, '13.0.0')) ? '+esm' : 'index.mjs'
   return vueUsePackages.map((p) => {
-    return [p, `https://cdn.jsdelivr.net/npm/${p}@${vueuseVersion.value}/index.mjs`]
+    return [p, `https://cdn.jsdelivr.net/npm/${p}@${vueuseVersion.value}/${file}`]
   })
 }
 
