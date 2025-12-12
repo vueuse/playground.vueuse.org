@@ -63,18 +63,20 @@ const issueLink = computed(() => {
 </script>
 
 <template>
-  <UApp>
-    <header class="flex items-center justify-between px-6 h-(--header-height)">
-      <div class="flex gap-2 items-center">
+  <div>
+    <UHeader>
+      <template #left>
         <UIcon name="i-logos-vueuse" class="size-8" />VueUse Playground
-      </div>
+      </template>
 
-      <div class="hidden lg:flex gap-2 items-center">
-        <USwitch v-model="ssr" label="SSR" />
-        <USwitch v-model="prod" label="Prod" />
-        <USelectMenu v-model="vueUseVersion" :items="vueUseVersionsSorted" class="w-32" icon="i-logos-vueuse" :loading="loadingVersions" />
-        <USelectMenu v-model="vueVersion" :items="vueVersionsSorted" class="w-32" icon="i-logos-vue" :loading="loadingVersions" />
-        <UButton icon="i-lucide-refresh-ccw" size="md" color="primary" variant="soft" @click="() => fetchVersions()" />
+      <template #right>
+        <div class="hidden lg:flex gap-2 items-center">
+          <USwitch v-model="ssr" label="SSR" />
+          <USwitch v-model="prod" label="Prod" />
+          <USelectMenu v-model="vueUseVersion" virtualize :items="vueUseVersionsSorted" class="w-32" icon="i-logos-vueuse" :loading="loadingVersions" />
+          <USelectMenu v-model="vueVersion" virtualize :items="vueVersionsSorted" class="w-32" icon="i-logos-vue" :loading="loadingVersions" />
+          <UButton icon="i-lucide-refresh-ccw" size="md" color="primary" variant="soft" @click="() => fetchVersions()" />
+        </div>
         <UButton
           color="neutral" variant="ghost"
           :icon="colorMode.preference === 'dark' ? 'i-heroicons-moon' : 'i-heroicons-sun'"
@@ -104,57 +106,23 @@ const issueLink = computed(() => {
             />
           </ClientOnly>
         </UTooltip>
-      </div>
-      <div class="lg:hidden">
-        <UButton
-          color="neutral" variant="ghost"
-          :icon="colorMode.preference === 'dark' ? 'i-heroicons-moon' : 'i-heroicons-sun'"
-          aria-label="color mode"
-          @click="toggleColorMode"
-        />
-        <UTooltip text="Open on GitHub">
-          <UButton
-            color="neutral"
-            variant="ghost"
-            to="https://github.com/vueuse"
-            target="_blank"
-            icon="i-simple-icons-github"
-            aria-label="GitHub"
-          />
-        </UTooltip>
-        <USlideover title="Settings">
-          <UButton icon="i-lucide-menu" color="neutral" variant="outline" />
-          <template #body>
-            <section class="flex flex-col gap-2 items-center justify-center">
-              <div class="flex gap-2">
-                <USwitch v-model="ssr" label="SSR" />
-                <USwitch v-model="prod" label="Prod" />
-              </div>
-              <div class="flex gap-2">
-                <USelectMenu v-model="vueUseVersion" :items="vueUseVersionsSorted" class="w-32" icon="i-logos-vueuse" :loading="loadingVersions" />
-                <USelectMenu v-model="vueVersion" :items="vueVersionsSorted" class="w-32" icon="i-logos-vue" :loading="loadingVersions" />
-                <UButton icon="i-lucide-refresh-ccw" size="md" color="primary" variant="soft" @click="() => fetchVersions()" />
-              </div>
-              <ClientOnly>
-                <UButton
-                  color="neutral"
-                  variant="ghost"
-                  :to="issueLink"
-                  target="_blank"
-                  icon="i-pajamas-issue-new"
-                  aria-label="Issue via GitHub"
-                >
-                  Report an issue on GitHub
-                </UButton>
-              </ClientOnly>
-            </section>
-          </template>
-        </USlideover>
-      </div>
-    </header>
-
-    <main class="h-[calc(100vh-var(--header-height))]">
-      <NuxtPage />
-    </main>
-  </UApp>
+      </template>
+      <template #body>
+        <section class="flex flex-col gap-2 items-center justify-center">
+          <div class="flex gap-2">
+            <USwitch v-model="ssr" label="SSR" />
+            <USwitch v-model="prod" label="Prod" />
+          </div>
+          <div class="flex gap-2">
+            <USelectMenu v-model="vueUseVersion" :items="vueUseVersionsSorted" class="w-32" icon="i-logos-vueuse" :loading="loadingVersions" />
+            <USelectMenu v-model="vueVersion" :items="vueVersionsSorted" class="w-32" icon="i-logos-vue" :loading="loadingVersions" />
+            <UButton icon="i-lucide-refresh-ccw" size="md" color="primary" variant="soft" @click="() => fetchVersions()" />
+          </div>
+        </section>
+      </template>
+    </UHeader>
+    <UMain class="h-[calc(100vh-var(--ui-header-height))]">
+      <slot />
+    </UMain>
+  </div>
 </template>
