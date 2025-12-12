@@ -32,7 +32,8 @@
   },
   "pnpm": {
     "overrides": {
-      "vite": "8.0.0-beta.0"
+      "vite": "8.0.0-beta.0",
+      "rolldown": "1.0.0-beta.53"
     },
     "ignoredBuiltDependencies": [
       "@parcel/watcher",
