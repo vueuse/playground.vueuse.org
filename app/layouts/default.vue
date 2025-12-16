@@ -50,11 +50,13 @@ const prod = useRouteQuery<string, boolean>('prod', 'false', {
   transform: stringToBooleanTransformer,
 })
 
-const currentHref = shallowRef(window?.location?.href)
+const r = useRequestURL()
+
+const currentHref = shallowRef(r.href)
 const route = useRoute()
 
 watch(() => route.fullPath, () => {
-  currentHref.value = window?.location?.href
+  currentHref.value = r.href
 })
 
 const issueLink = computed(() => {
@@ -95,16 +97,14 @@ const issueLink = computed(() => {
           />
         </UTooltip>
         <UTooltip text="Report an issue on GitHub">
-          <ClientOnly>
-            <UButton
-              color="neutral"
-              variant="ghost"
-              :to="issueLink"
-              target="_blank"
-              icon="i-pajamas-issue-new"
-              aria-label="Issue via GitHub"
-            />
-          </ClientOnly>
+          <UButton
+            color="neutral"
+            variant="ghost"
+            :to="issueLink"
+            target="_blank"
+            icon="i-pajamas-issue-new"
+            aria-label="Issue via GitHub"
+          />
         </UTooltip>
       </template>
       <template #body>
