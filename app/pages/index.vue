@@ -41,8 +41,8 @@ const vueUsePackages = [
 ]
 
 function generateVueUseImportCDNs() {
-  const version = semver.coerce(vueuseVersion.value)
-  const file = vueuseVersion.value === 'latest' || (version && semver.gte(version, '13.0.0')) ? '+esm' : 'index.mjs'
+  const version = vueuseVersion.value
+  const file = version === 'latest' || (version && semver.gt(version, '14.0.0-alpha.0')) ? 'dist/index.js' : 'index.mjs'
   return vueUsePackages.map((p) => {
     return [p, `https://cdn.jsdelivr.net/npm/${p}@${vueuseVersion.value}/${file}`]
   })
